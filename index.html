@@ -1553,17 +1553,51 @@
                 </div>
               </div>
             </div>
+            <!-- Environmental Thermodynamic Model Readouts -->
+            <div style="background: var(--bg); padding: 8px; border-radius: var(--radius-sm); border: 1px solid var(--border); margin-bottom: 10px; font-size: 11px; font-family: var(--font-mono);">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <span style="color: var(--muted);">Partial Pressure P(O₂):</span>
+                <strong id="o2PartialPressure" style="color: var(--ink);">21.2 kPa (OSHA min: 19.5)</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--muted);">Displacement Delta:</span>
+                <strong id="o2DisplacementRate" style="color: var(--warning);">0.00% (Clean Air)</strong>
+              </div>
+            </div>
+
+            <!-- Environmental Calibration Sliders (Temp / Humidity / Altitude) -->
+            <div style="margin-bottom: 10px; border-top: 1px dashed var(--border); padding-top: 8px;">
+              <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--muted); margin-bottom: 6px;">Environmental Parameters:</div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; font-size: 10px;">
+                <div>
+                  <div style="display: flex; justify-content: space-between; color: var(--muted);">Temp <span id="o2EnvTempVal">25°C</span></div>
+                  <input type="range" id="o2EnvTemp" min="10" max="45" step="1" value="25" style="width: 100%;">
+                </div>
+                <div>
+                  <div style="display: flex; justify-content: space-between; color: var(--muted);">RH% <span id="o2EnvRhVal">50%</span></div>
+                  <input type="range" id="o2EnvRh" min="10" max="95" step="5" value="50" style="width: 100%;">
+                </div>
+                <div>
+                  <div style="display: flex; justify-content: space-between; color: var(--muted);">Alt <span id="o2EnvAltVal">0m</span></div>
+                  <input type="range" id="o2EnvAlt" min="0" max="2500" step="100" value="0" style="width: 100%;">
+                </div>
+              </div>
+            </div>
+
             <div class="setting-row" style="margin-bottom: 6px;">
               <div class="setting-header">
-                <span class="setting-title">Virtual O₂ Level</span>
+                <span class="setting-title">Manual O₂ Override</span>
                 <span id="o2SliderVal" class="setting-val">20.9%</span>
               </div>
               <input type="range" id="o2Slider" min="0" max="25" step="0.1" value="20.9">
             </div>
-            <label class="checkbox-row" style="font-size: 11px;">
+            <label class="checkbox-row" style="font-size: 11px; margin-bottom: 8px;">
               <input type="checkbox" id="o2AutoCorrelate" checked>
-              <span>Auto-correlate with gas leak (O₂ drops as gas displaces air)</span>
+              <span>Dynamic Chemical Displacement (Real-time O₂ Drop)</span>
             </label>
+            <button id="testAlarmBtn" class="btn btn-secondary btn-sm" style="width: 100%; font-size: 11px;">
+              🔊 Test Industrial Horn / Audio Alarm
+            </button>
           </div>
         </div>
 
@@ -2573,41 +2607,64 @@ void loop() {
         // Draw static background
         this.ctx.drawImage(this.bgCanvas, 0, 0);
 
-        // Spawn leak puffs if leak is active (3 puffs per frame)
+        // High-velocity realistic convective chemical plume simulation
         if (this.leakActive) {
-          for (let i = 0; i < 3; i++) {
+          // Draw high-pressure jet expansion cone at valve packing orifice (x:160, y:135)
+          const jetGrad = this.ctx.createLinearGradient(160, 138, 160, 95);
+          jetGrad.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
+          jetGrad.addColorStop(0.25, 'rgba(235, 245, 255, 0.85)');
+          jetGrad.addColorStop(0.7, 'rgba(215, 235, 255, 0.45)');
+          jetGrad.addColorStop(1, 'rgba(200, 225, 250, 0)');
+          this.ctx.fillStyle = jetGrad;
+          this.ctx.beginPath();
+          this.ctx.moveTo(158, 138);
+          this.ctx.lineTo(142, 90);
+          this.ctx.lineTo(178, 90);
+          this.ctx.lineTo(162, 138);
+          this.ctx.fill();
+
+          // Spawn 6 expanding turbulent vapor billow vortices per frame
+          for (let i = 0; i < 6; i++) {
             this.puffs.push({
-              x: 160 + (Math.random() - 0.5) * 3,
-              y: 142,
-              vx: (Math.random() - 0.5) * 0.9,
-              vy: -0.6 - Math.random() * 0.9,
-              radius: 5,
-              alpha: 0.32,
+              x: 160 + (Math.random() - 0.5) * 6,
+              y: 135 + (Math.random() - 0.5) * 4,
+              vx: (Math.random() - 0.5) * 1.8,
+              vy: -1.2 - Math.random() * 1.8,
+              radius: 10 + Math.random() * 6,
+              maxRadius: 45 + Math.random() * 25,
+              alpha: 0.78 + Math.random() * 0.15,
               phase: Math.random() * Math.PI * 2,
-              wobbleFreq: 0.08 + Math.random() * 0.04
+              wobbleFreq: 0.06 + Math.random() * 0.05,
+              swirl: (Math.random() - 0.5) * 1.2
             });
           }
         }
 
-        // Update and draw puffs
+        // Update and draw expanding convective chemical billows
         for (let i = this.puffs.length - 1; i >= 0; i--) {
           const p = this.puffs[i];
           p.phase += p.wobbleFreq;
-          p.x += p.vx + Math.sin(p.phase) * 0.45;
+          // Convective turbulence: lateral expansion and upward buoyancy acceleration
+          p.x += p.vx + Math.sin(p.phase) * 0.85 + p.swirl;
           p.y += p.vy;
-          p.radius += 0.32;
-          p.alpha -= 0.0032;
+          // Plume expands as it rises through atmospheric pressure drop
+          if (p.radius < p.maxRadius) {
+            p.radius += 0.75;
+          }
+          p.alpha -= 0.0075;
 
-          if (p.alpha <= 0 || p.y < -p.radius) {
+          if (p.alpha <= 0.02 || p.y < -p.radius) {
             this.puffs.splice(i, 1);
             continue;
           }
 
-          // White radial gradient: rgba(236,240,244,a) -> transparent
+          // Photorealistic vapor gradient: dense white-gray aerosol core, soft turbulent perimeter
           const radGrad = this.ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius);
-          radGrad.addColorStop(0, `rgba(236, 240, 244, ${Math.max(0, p.alpha)})`);
-          radGrad.addColorStop(0.6, `rgba(236, 240, 244, ${Math.max(0, p.alpha * 0.5)})`);
-          radGrad.addColorStop(1, 'rgba(236, 240, 244, 0)');
+          const curAlpha = Math.max(0, p.alpha);
+          radGrad.addColorStop(0, `rgba(245, 250, 255, ${curAlpha})`);
+          radGrad.addColorStop(0.35, `rgba(230, 242, 252, ${curAlpha * 0.85})`);
+          radGrad.addColorStop(0.7, `rgba(215, 230, 245, ${curAlpha * 0.45})`);
+          radGrad.addColorStop(1, 'rgba(200, 220, 240, 0)');
 
           this.ctx.fillStyle = radGrad;
           this.ctx.beginPath();
@@ -2712,16 +2769,17 @@ void loop() {
           }
         }
 
-        // 2. Leak: 2 cold puffs per frame from (80, 72)
+        // 2. Thermal Leak: 5 large cold plume vortices per frame from (80, 72)
         if (this.leakActive) {
-          for (let i = 0; i < 2; i++) {
+          for (let i = 0; i < 5; i++) {
             this.puffs.push({
-              x: 80 + (Math.random() - 0.5) * 1.5,
-              y: 72,
-              vx: (Math.random() - 0.5) * 0.4,
-              vy: -0.35 - Math.random() * 0.45,
-              r: 3.0,
-              strength: 1.0
+              x: 80 + (Math.random() - 0.5) * 3.0,
+              y: 72 + (Math.random() - 0.5) * 2.0,
+              vx: (Math.random() - 0.5) * 0.8,
+              vy: -0.8 - Math.random() * 0.9,
+              r: 6.0,
+              maxR: 26.0,
+              strength: 1.5
             });
           }
         }
@@ -3122,9 +3180,10 @@ void loop() {
               inZone = watchZones.some(z => nx >= z.x0 && nx <= z.x1 && ny >= z.y0 && ny <= z.y1);
             }
 
-            if (inZone && this.score[c] > 0.3) {
+            if (inZone && this.score[c] > 0.22) {
               earlyGrid[c] = 1;
-              if (this.persist[c] >= requiredPersistFrames) {
+              // Faster confirmation: 10 frames (~0.7s) of continuous vapor activity
+              if (this.persist[c] >= Math.min(10, requiredPersistFrames)) {
                 confirmedGrid[c] = 1;
               }
             }
@@ -3298,19 +3357,30 @@ void loop() {
         const isSensorOn = this.sensorMode !== 'off';
 
         if (isSensorOn) {
-          // sensorConf = clamp((ppm - 300) / 700)
           sensorConf = clamp((this.ppm - 300) / 700);
 
-          // Fusion rules
-          let fused = 0.6 * camConf + 0.4 * sensorConf;
-          if (camConf >= 0.55 && sensorConf >= 0.55) {
-            fused = Math.max(fused, 0.85); // LEAK
-          } else if ((camConf >= 0.55 && sensorConf < 0.55) || (sensorConf >= 0.55 && camConf < 0.55)) {
-            // Only one >= 0.55 -> clamped to 0.35–0.54 (WARNING)
-            fused = clamp(fused, 0.35, 0.54);
+          // Highly responsive industrial sensor fusion:
+          // 1. Dual confirmation (optical plume + elevated gas) -> immediate high-confidence LEAK
+          if (camConf >= 0.35 && sensorConf >= 0.40) {
+            this.fusedConfidence = Math.max(0.88, 0.5 * camConf + 0.5 * sensorConf);
           }
-          this.fusedConfidence = fused;
+          // 2. Strong optical plume verified by camera alone -> LEAK
+          else if (camConf >= 0.48) {
+            this.fusedConfidence = Math.max(0.68, camConf);
+          }
+          // 3. High gas concentration excursion (ppm >= 800) -> LEAK
+          else if (sensorConf >= 0.70) {
+            this.fusedConfidence = Math.max(0.70, sensorConf);
+          }
+          // 4. Moderate early activity -> WARNING
+          else if (camConf >= 0.22 || sensorConf >= 0.25) {
+            this.fusedConfidence = clamp(0.6 * camConf + 0.4 * sensorConf, 0.30, 0.53);
+          }
+          else {
+            this.fusedConfidence = 0.6 * camConf + 0.4 * sensorConf;
+          }
         } else {
+          // Camera only mode
           this.fusedConfidence = camConf;
         }
 
@@ -3490,6 +3560,12 @@ void loop() {
 
         this.elSimControls = document.getElementById('simControlsGroup');
         this.elToggleLeakBtn = document.getElementById('toggleLeakBtn');
+        const testAlarmBtn = document.getElementById('testAlarmBtn');
+        if (testAlarmBtn) {
+          testAlarmBtn.addEventListener('click', () => {
+            this.decision.playAlarmBeeps();
+          });
+        }
         this.elWalkPersonBtn = document.getElementById('walkPersonBtn');
         this.elAlertList = document.getElementById('alertList');
         this.elAlertCount = document.getElementById('alertCount');
@@ -3853,6 +3929,10 @@ void loop() {
 
         // 1. Advance camera source
         this.currentSource.step();
+        // Continuously tick the thermodynamic O2 model with live gas PPM
+        if (this.o2Monitor) {
+          this.o2Monitor.tick(this.decision.ppm || 150);
+        }
 
         // 2. Extract frame buffer & process detection
         let detectionResult = { confidence: 0, boxes: [], calibrating: false };
@@ -4296,8 +4376,18 @@ void loop() {
        ===================================================================== */
     class OxygenMonitor {
       constructor() {
-        this.o2Percent = 20.9;
+        // Thermodynamic environmental parameters
+        this.tempC = 25.0;          // Ambient temperature in °C
+        this.relativeHumidity = 50; // Ambient RH %
+        this.altitudeMeters = 0;    // Facility elevation above sea level
+        this.currentPpm = 150;      // Current chemical leak concentration
+
+        this.o2Percent = 20.90;
+        this.baselineO2 = 20.90;
+        this.partialPressureKpa = 21.15;
         this.autoCorrelate = true;
+
+        // Elements
         this.elGaugeArc = document.getElementById('o2GaugeArc');
         this.elValueText = document.getElementById('o2ValueText');
         this.elStatusText = document.getElementById('o2StatusText');
@@ -4305,6 +4395,8 @@ void loop() {
         this.elSlider = document.getElementById('o2Slider');
         this.elSliderVal = document.getElementById('o2SliderVal');
         this.elAutoCheck = document.getElementById('o2AutoCorrelate');
+        this.elPartialPressure = document.getElementById('o2PartialPressure');
+        this.elDisplacementRate = document.getElementById('o2DisplacementRate');
 
         if (this.elSlider) {
           this.elSlider.addEventListener('input', (e) => {
@@ -4317,26 +4409,96 @@ void loop() {
             this.autoCorrelate = e.target.checked;
           });
         }
+
+        // Environmental tuning inputs
+        const tempIn = document.getElementById('o2EnvTemp');
+        const rhIn = document.getElementById('o2EnvRh');
+        const altIn = document.getElementById('o2EnvAlt');
+        if (tempIn) tempIn.addEventListener('input', (e) => {
+          this.tempC = parseFloat(e.target.value);
+          document.getElementById('o2EnvTempVal').textContent = `${this.tempC}°C`;
+          this.recalculate();
+        });
+        if (rhIn) rhIn.addEventListener('input', (e) => {
+          this.relativeHumidity = parseFloat(e.target.value);
+          document.getElementById('o2EnvRhVal').textContent = `${this.relativeHumidity}%`;
+          this.recalculate();
+        });
+        if (altIn) altIn.addEventListener('input', (e) => {
+          this.altitudeMeters = parseFloat(e.target.value);
+          document.getElementById('o2EnvAltVal').textContent = `${this.altitudeMeters}m`;
+          this.recalculate();
+        });
+
+        this.recalculate();
+      }
+
+      /*
+       * REAL ENVIRONMENTAL THERMODYNAMIC MODEL (Dalton's & Amagat's Laws):
+       * 1. Barometric Pressure at altitude H (International Standard Atmosphere):
+       *    P_atm(H) = 101.325 * (1 - 2.25577e-5 * H)^5.25588 kPa
+       * 2. Saturation Water Vapor Pressure (Tetens formula):
+       *    P_sat(T) = 0.61078 * exp((17.27 * T) / (T + 237.3)) kPa
+       * 3. Actual Water Vapor Pressure:
+       *    P_h2o = (RH / 100) * P_sat(T)
+       * 4. Ambient Dry Air Fraction:
+       *    F_dry = (P_atm - P_h2o) / P_atm
+       *    Baseline O2 % = 20.946% * F_dry
+       * 5. Chemical Displacement:
+       *    Each 10,000 ppm (1% vol) of leaking gas displaces air proportionally.
+       *    In localized stagnant plume pockets, confinement factor K_conf ≈ 1.8.
+       */
+      recalculate() {
+        // 1. Atmospheric pressure (kPa)
+        const pAtm = 101.325 * Math.pow(1.0 - 2.25577e-5 * this.altitudeMeters, 5.25588);
+        
+        // 2. Saturated water vapor pressure (kPa)
+        const pSat = 0.61078 * Math.exp((17.27 * this.tempC) / (this.tempC + 237.3));
+        
+        // 3. Actual vapor pressure (kPa)
+        const pH2O = (this.relativeHumidity / 100.0) * pSat;
+        
+        // 4. Dry air fraction
+        const fDry = Math.max(0.75, (pAtm - pH2O) / pAtm);
+        
+        // Baseline O2 in ambient air before chemical contamination
+        this.baselineO2 = 20.946 * fDry;
+
+        // 5. Chemical gas displacement (if autoCorrelate is enabled)
+        if (this.autoCorrelate) {
+          // Localized confinement factor: 1.8 near equipment/valve
+          const kConf = 1.8;
+          const gasFraction = (this.currentPpm / 1000000.0) * kConf;
+          // Brownian sensor noise: ±0.02%
+          const sensorJitter = (Math.random() - 0.5) * 0.04;
+          this.o2Percent = Math.max(0, this.baselineO2 * (1.0 - gasFraction * 10.0) + sensorJitter);
+          if (this.elSlider) this.elSlider.value = this.o2Percent.toFixed(1);
+        }
+
+        // Partial pressure of O2: P_O2 = (O2% / 100) * P_atm
+        this.partialPressureKpa = (this.o2Percent / 100.0) * pAtm;
+
         this.update();
       }
 
+      tick(ppm) {
+        this.currentPpm = ppm;
+        this.recalculate();
+      }
+
       setFromGasPPM(ppm) {
-        if (!this.autoCorrelate) return;
-        // O2 drops as gas displaces air: O2 ≈ 20.9 * (1 - ppm/10000)
-        const newO2 = Math.max(0, 20.9 * (1.0 - ppm / 10000.0));
-        this.o2Percent = Math.round(newO2 * 10) / 10;
-        if (this.elSlider) this.elSlider.value = this.o2Percent;
-        this.update();
+        this.currentPpm = ppm;
+        this.recalculate();
       }
 
       getStatus() {
         const o2 = this.o2Percent;
-        if (o2 >= 23.5) return { label: 'O₂ Enriched – Fire risk', color: 'var(--warning)', level: 'warning' };
-        if (o2 >= 19.5) return { label: `Normal (${o2.toFixed(1)}%)`, color: 'var(--safe)', level: 'safe' };
-        if (o2 >= 16.0) return { label: `Deficient (${o2.toFixed(1)}%) – Ventilate!`, color: 'var(--warning)', level: 'warning' };
-        if (o2 >= 10.0) return { label: `DANGER (${o2.toFixed(1)}%) – Impaired!`, color: 'var(--leak)', level: 'leak' };
-        if (o2 >= 6.0)  return { label: `CRITICAL (${o2.toFixed(1)}%) – Unconsciousness!`, color: 'var(--leak)', level: 'leak' };
-        return { label: `FATAL (${o2.toFixed(1)}%) – Immediately lethal!`, color: 'var(--leak)', level: 'leak' };
+        if (o2 >= 23.5) return { label: 'O₂ Enriched – Extreme Fire Hazard!', color: 'var(--warning)', level: 'warning' };
+        if (o2 >= 19.5) return { label: `Normal Atmospheric (${o2.toFixed(2)}%)`, color: 'var(--safe)', level: 'safe' };
+        if (o2 >= 16.0) return { label: `WARNING: O₂ Deficient (${o2.toFixed(2)}%) – Ventilate!`, color: 'var(--warning)', level: 'warning' };
+        if (o2 >= 10.0) return { label: `DANGER: Hypoxia & Impaired Cognition (${o2.toFixed(2)}%)`, color: 'var(--leak)', level: 'leak' };
+        if (o2 >= 6.0)  return { label: `CRITICAL: Loss of Consciousness (${o2.toFixed(2)}%)!`, color: 'var(--leak)', level: 'leak' };
+        return { label: `FATAL: Immediately Lethal Atmosphere (${o2.toFixed(2)}%)!`, color: 'var(--leak)', level: 'leak' };
       }
 
       update() {
@@ -4348,13 +4510,24 @@ void loop() {
           this.elStatusText.style.color = status.color;
         }
         if (this.elStatusBadge) {
-          const badgeMap = { safe: ['Normal','var(--safe-bg)','var(--safe)'], warning: ['Warning','var(--warning-bg)','var(--warning)'], leak: ['DANGER','var(--leak-bg)','var(--leak)'] };
+          const badgeMap = {
+            safe: ['Normal','var(--safe-bg)','var(--safe)'],
+            warning: ['Warning: Deficient','var(--warning-bg)','var(--warning)'],
+            leak: ['CRITICAL HYPOXIA','var(--leak-bg)','var(--leak)']
+          };
           const b = badgeMap[status.level];
           this.elStatusBadge.textContent = b[0];
           this.elStatusBadge.style.background = b[1];
           this.elStatusBadge.style.color = b[2];
         }
-        // Update gauge arc
+        if (this.elPartialPressure) {
+          this.elPartialPressure.textContent = `${this.partialPressureKpa.toFixed(1)} kPa (OSHA min: 19.5)`;
+        }
+        if (this.elDisplacementRate) {
+          const drop = Math.max(0, this.baselineO2 - this.o2Percent);
+          this.elDisplacementRate.textContent = drop > 0.05 ? `-${drop.toFixed(2)}% O₂ displaced` : '0.00% (Clean Air)';
+        }
+        // Update SVG arc (scale 0% - 25%)
         if (this.elGaugeArc) {
           const fraction = clamp(this.o2Percent / 25.0);
           const arcLen = Math.round(fraction * 198);
