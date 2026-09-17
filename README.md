@@ -6,6 +6,13 @@ Designed for the **"AI Integration for Management of Chemical Hazards in Workpla
 
 ---
 
+## 🌐 Live Web Application
+👉 **Access the Live Production App**: [https://aravindjk03.github.io/chemicalsafetythermal-camera/](https://aravindjk03.github.io/chemicalsafetythermal-camera/)
+
+*No installation, setup, or hardware required — runs directly in Google Chrome, Microsoft Edge, and Safari on desktop and mobile.*
+
+---
+
 ## 🌟 Unified Multi-Screen Architecture (`index.html`)
 
 GasVision AI integrates 4 specialized industrial safety modules into a seamless single-page application with instant zero-reload tab navigation:
