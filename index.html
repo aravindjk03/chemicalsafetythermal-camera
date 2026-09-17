@@ -965,6 +965,342 @@
       border: 1px solid var(--border);
       color: var(--muted);
     }
+
+    /* =====================================================================
+       UNIFIED MULTI-SCREEN NAVIGATION
+       ===================================================================== */
+    .screen-nav {
+      display: inline-flex;
+      gap: 4px;
+      background: var(--bg);
+      padding: 4px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      margin: 0 12px;
+    }
+    .screen-nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-family: var(--font-main);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .screen-nav-btn:hover {
+      color: var(--ink);
+      background: var(--panel-hover);
+    }
+    .screen-nav-btn.active {
+      background: var(--panel);
+      color: var(--brand);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .app-screen {
+      display: none;
+      animation: fadeInScreen 0.25s ease forwards;
+    }
+    .app-screen.active {
+      display: block;
+    }
+    @keyframes fadeInScreen {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =====================================================================
+       CHEMICAL THREAT SCANNER & VISION ESTIMATOR
+       ===================================================================== */
+    .scanner-layout {
+      max-width: 1400px;
+      margin: 20px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 1100px) {
+      .scanner-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    .scanner-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .scanner-viewfinder-wrap {
+      position: relative;
+      background: #000;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      border: 1px solid var(--border);
+    }
+    #scannerViewfinderCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+    .viewfinder-hud {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 12px;
+    }
+    .hud-target-box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 160px;
+      height: 160px;
+      border: 2px dashed rgba(45, 114, 226, 0.8);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hud-target-box::after {
+      content: '+';
+      font-size: 24px;
+      color: rgba(45, 114, 226, 0.9);
+      font-family: var(--font-mono);
+    }
+    .hud-tag {
+      background: rgba(14, 42, 71, 0.85);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 3px;
+      border-left: 2px solid var(--brand);
+      backdrop-filter: blur(4px);
+    }
+    .preset-chip-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .preset-chip {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: var(--font-main);
+    }
+    .preset-chip:hover {
+      border-color: var(--brand);
+      background: var(--panel-hover);
+    }
+    .preset-chip.active {
+      border-color: var(--brand);
+      background: rgba(20, 70, 160, 0.08);
+      box-shadow: 0 0 0 1px var(--brand);
+    }
+    .preset-chip-name {
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--ink);
+      display: block;
+    }
+    .preset-chip-formula {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    /* NFPA 704 Diamond */
+    .nfpa-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--bg);
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+    .nfpa-diamond-svg {
+      width: 90px;
+      height: 90px;
+      flex-shrink: 0;
+    }
+    .threat-level-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    /* Plume Radar Canvas */
+    .radar-canvas-wrap {
+      position: relative;
+      background: #081018;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      aspect-ratio: 16/10;
+    }
+    #plumeRadarCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .radar-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
+      font-size: 11px;
+    }
+    .radar-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    /* Health Timeline */
+    .health-timeline {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 768px) {
+      .health-timeline {
+        grid-template-columns: 1fr;
+      }
+    }
+    .timeline-step {
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      border-left: 3px solid var(--border);
+    }
+    .timeline-step.step-acute {
+      border-left-color: var(--warning);
+    }
+    .timeline-step.step-severe {
+      border-left-color: #E65100;
+    }
+    .timeline-step.step-lethal {
+      border-left-color: var(--leak);
+    }
+    .timeline-time {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .timeline-desc {
+      font-size: 11px;
+      line-height: 1.4;
+      color: var(--ink);
+    }
+
+    /* =====================================================================
+       FUTURE ROADMAP CARDS
+       ===================================================================== */
+    .roadmap-grid {
+      max-width: 1400px;
+      margin: 20px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 20px;
+    }
+    .roadmap-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+    .roadmap-card:hover {
+      border-color: var(--brand);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .roadmap-phase-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 12px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    .badge-phase1 { background: rgba(30, 142, 90, 0.12); color: var(--safe); }
+    .badge-phase2 { background: rgba(20, 70, 160, 0.12); color: var(--brand); }
+    .badge-phase3 { background: rgba(212, 138, 6, 0.12); color: var(--warning); }
+    .roadmap-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .roadmap-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+    .roadmap-specs {
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--ink);
+      border: 1px solid var(--border);
+    }
+    .roadmap-specs li {
+      margin-left: 16px;
+      margin-bottom: 4px;
+    }
+
+    /* Inspection Reticle toggle button & HUD */
+    .inspection-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      background: rgba(20, 70, 160, 0.1);
+      color: var(--brand);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
     .sds-detection-note {
       margin-top: 8px;
       padding: 6px 8px;
@@ -992,7 +1328,23 @@
     </div>
 
     <div class="header-controls">
-      <a href="dashboard.html" class="btn btn-secondary btn-sm" style="text-decoration: none;">📊 Analytics Dashboard</a>
+      
+    <!-- Primary Screen Switcher -->
+    <nav class="screen-nav" aria-label="Main Navigation">
+      <button class="screen-nav-btn active" data-screen="view-monitor">
+        <span>📡</span> Live Monitor
+      </button>
+      <button class="screen-nav-btn" data-screen="view-scanner">
+        <span>🔬</span> Chemical Hazard Scanner
+      </button>
+      <button class="screen-nav-btn" data-screen="view-dashboard">
+        <span>📊</span> Analytics Dashboard
+      </button>
+      <button class="screen-nav-btn" data-screen="view-roadmap">
+        <span>🚀</span> Future Roadmap
+      </button>
+    </nav>
+
       <div class="control-group">
         <label for="cameraSourceSelect">Camera Source</label>
         <select id="cameraSourceSelect">
@@ -1013,7 +1365,11 @@
   </header>
 
   <!-- Full-Width Status Band -->
-  <div id="statusBand" class="status-band state-safe" role="region" aria-label="System status">
+    <!-- ===================================================================
+       SCREEN 1: LIVE MONITOR (Core Real-time CV & Sensor Fusion)
+       =================================================================== -->
+  <div id="view-monitor" class="app-screen active">
+<div id="statusBand" class="status-band state-safe" role="region" aria-label="System status">
     <div class="status-left">
       <div class="status-dot" aria-hidden="true"></div>
       <div class="status-text-wrap">
@@ -1419,6 +1775,566 @@ void loop() {
       </div>
     </section>
   </div>
+  </div>
+
+
+  <!-- ===================================================================
+       SCREEN 2: CHEMICAL HAZARD VISION SCANNER & THREAT ESTIMATOR
+       =================================================================== -->
+  <div id="view-scanner" class="app-screen">
+    <div class="status-band state-safe" style="border-left-color: var(--brand);">
+      <div class="status-left">
+        <span style="font-size: 20px;">🔬</span>
+        <div class="status-text-wrap">
+          <div class="status-heading" style="color: var(--brand);">OPTICAL CHEMICAL IDENTIFIER &amp; ATMOSPHERIC THREAT MODELER</div>
+          <div class="status-subtext">Capture container, classify GHS/NFPA 704 hazard, and simulate atmospheric exposure plume consequences</div>
+        </div>
+      </div>
+      <div class="status-right" style="gap: 8px;">
+        <button id="scannerCaptureBtn" class="btn btn-primary btn-sm">📸 Capture From Camera</button>
+        <button id="scannerUploadBtn" class="btn btn-secondary btn-sm">📁 Upload Image</button>
+        <input type="file" id="scannerFileInput" accept="image/*" hidden>
+      </div>
+    </div>
+
+    <div class="scanner-layout">
+      <!-- Left Column: Viewfinder & Presets -->
+      <div class="scanner-left-col">
+        <div class="scanner-card">
+          <div class="card-header">
+            <span class="card-title">Camera Viewfinder &amp; Target</span>
+            <span id="scannerStatusBadge" class="sensor-badge" style="background: var(--safe-bg); color: var(--safe);">Target Locked</span>
+          </div>
+          <div class="card-body" style="padding: 12px;">
+            <div class="scanner-viewfinder-wrap">
+              <canvas id="scannerViewfinderCanvas" width="400" height="300"></canvas>
+              <div class="viewfinder-hud">
+                <div style="display: flex; justify-content: space-between;">
+                  <span class="hud-tag">AI VISION: ACTIVE</span>
+                  <span id="hudConfidence" class="hud-tag" style="background: rgba(30,142,90,0.9);">CONF: 98.4%</span>
+                </div>
+                <div class="hud-target-box"></div>
+                <div style="display: flex; justify-content: space-between;">
+                  <span id="hudResolution" class="hud-tag">640x480 UVC</span>
+                  <span class="hud-tag">GHS DETECTOR v2.4</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 14px;">
+              <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--muted);">Industrial Chemical Benchmark Presets:</span>
+              <div class="preset-chip-grid">
+                <div class="preset-chip active" data-chem="ammonia">
+                  <span class="preset-chip-name">Ammonia Tank</span>
+                  <span class="preset-chip-formula">NH₃ · UN 1005</span>
+                </div>
+                <div class="preset-chip" data-chem="chlorine">
+                  <span class="preset-chip-name">Chlorine Tonner</span>
+                  <span class="preset-chip-formula">Cl₂ · UN 1017</span>
+                </div>
+                <div class="preset-chip" data-chem="methane">
+                  <span class="preset-chip-name">Methane Pipeline</span>
+                  <span class="preset-chip-formula">CH₄ · UN 1971</span>
+                </div>
+                <div class="preset-chip" data-chem="benzene">
+                  <span class="preset-chip-name">Benzene Drum</span>
+                  <span class="preset-chip-formula">C₆H₆ · UN 1114</span>
+                </div>
+                <div class="preset-chip" data-chem="h2s">
+                  <span class="preset-chip-name">H₂S Wellhead</span>
+                  <span class="preset-chip-formula">H₂S · UN 1053</span>
+                </div>
+                <div class="preset-chip" data-chem="sulfuric">
+                  <span class="preset-chip-name">Oleum / Acid Tote</span>
+                  <span class="preset-chip-formula">H₂SO₄ · UN 1831</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chemical Hazard Classification Card -->
+        <div class="scanner-card">
+          <div class="card-header">
+            <span class="card-title">Hazard Rating &amp; NFPA 704</span>
+            <span id="hazardLevelBadge" class="threat-level-badge" style="background: var(--leak-bg); color: var(--leak);">EXTREME DANGER</span>
+          </div>
+          <div class="card-body" style="padding: 14px;">
+            <div class="nfpa-wrap">
+              <!-- SVG NFPA 704 Standard Diamond -->
+              <svg class="nfpa-diamond-svg" viewBox="0 0 100 100">
+                <!-- Outer diamond border -->
+                <polygon points="50,2 98,50 50,98 2,50" fill="none" stroke="var(--border)" stroke-width="2"/>
+                <!-- Top: Red Flammability -->
+                <polygon points="50,4 73,27 50,50 27,27" fill="#DC2626"/>
+                <text id="nfpaFlammability" x="50" y="32" font-family="var(--font-mono)" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">1</text>
+                <!-- Left: Blue Health -->
+                <polygon points="27,27 50,50 27,73 4,50" fill="#2563EB"/>
+                <text id="nfpaHealth" x="27" y="55" font-family="var(--font-mono)" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">3</text>
+                <!-- Right: Yellow Instability -->
+                <polygon points="73,27 96,50 73,73 50,50" fill="#F59E0B"/>
+                <text id="nfpaInstability" x="73" y="55" font-family="var(--font-mono)" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">0</text>
+                <!-- Bottom: White Special -->
+                <polygon points="50,50 73,73 50,96 27,73" fill="#FFFFFF"/>
+                <text id="nfpaSpecial" x="50" y="78" font-family="var(--font-mono)" font-size="12" font-weight="700" fill="#0E2A47" text-anchor="middle">COR</text>
+              </svg>
+              <div>
+                <div id="chemNameDisplay" style="font-size: 15px; font-weight: 700; color: var(--ink);">Anhydrous Ammonia</div>
+                <div id="chemFormulaCas" style="font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-bottom: 6px;">Formula: NH₃ | CAS: 7664-41-7</div>
+                <div id="chemGhsPictograms" style="font-size: 18px; margin-bottom: 4px;">☠️ ⚗️ ⚠️</div>
+                <div id="chemSignalWord" class="sds-signal-danger">DANGER</div>
+              </div>
+            </div>
+
+            <div style="margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11px;">
+              <div class="sds-detail-item">
+                <div class="sds-detail-label">Vapor Density (Air = 1.0)</div>
+                <div id="chemVaporDensity" class="sds-detail-value">0.59 (Lighter than air)</div>
+              </div>
+              <div class="sds-detail-item">
+                <div class="sds-detail-label">Boiling Point</div>
+                <div id="chemBoilingPoint" class="sds-detail-value">-33.3 °C (Liquefied Gas)</div>
+              </div>
+              <div class="sds-detail-item">
+                <div class="sds-detail-label">Flammability (LEL / UEL)</div>
+                <div id="chemLelUel" class="sds-detail-value">15.0% - 28.0%</div>
+              </div>
+              <div class="sds-detail-item">
+                <div class="sds-detail-label">OSHA PEL (TWA)</div>
+                <div id="chemPel" class="sds-detail-value">50 ppm</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Atmospheric Exposure Threat Consequence Model -->
+      <div class="scanner-right-col">
+        <!-- Threat Dispersion Radar -->
+        <div class="scanner-card">
+          <div class="card-header">
+            <div>
+              <span class="card-title">Atmospheric Exposure Consequence: Downwind Dispersion Plume</span>
+              <p style="font-size: 11px; color: var(--muted); margin: 0;">ALOHA &amp; EPA RMP Gaussian threat dispersion modeling under 12 km/h ambient wind</p>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <span class="status-badge badge-working">Live Simulation</span>
+            </div>
+          </div>
+          <div class="card-body" style="padding: 14px;">
+            <div class="radar-canvas-wrap">
+              <canvas id="plumeRadarCanvas" width="700" height="420"></canvas>
+            </div>
+
+            <div class="radar-legend">
+              <div class="radar-legend-item">
+                <div class="legend-dot" style="background: #D0342C;"></div>
+                <span><strong>Red Zone (Lethal / IDLH):</strong> <span id="distRedZone">350 m</span></span>
+              </div>
+              <div class="radar-legend-item">
+                <div class="legend-dot" style="background: #F59E0B;"></div>
+                <span><strong>Orange Zone (AEGL-2 Disabling):</strong> <span id="distOrangeZone">1.2 km</span></span>
+              </div>
+              <div class="radar-legend-item">
+                <div class="legend-dot" style="background: #EAB308;"></div>
+                <span><strong>Yellow Zone (AEGL-1 Irritation &amp; Odor):</strong> <span id="distYellowZone">3.4 km</span></span>
+              </div>
+            </div>
+
+            <!-- Atmospheric Exposure Behavior Callout -->
+            <div style="margin-top: 14px; padding: 12px; background: var(--bg); border-radius: var(--radius-sm); border: 1px solid var(--border);">
+              <div style="font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 4px;">
+                ☁️ What Happens When Released into the Atmosphere?
+              </div>
+              <div id="chemAtmoBehavior" style="font-size: 11px; color: var(--muted); line-height: 1.5;">
+                Anhydrous ammonia gas reacts exothermically with atmospheric moisture to form dense, opaque white clouds of ammonium hydroxide aerosol. Even though pure NH₃ is lighter than air, the moisture-laden cloud becomes heavier than air, hugging ground depressions and building wakes.
+              </div>
+              <div style="margin-top: 8px; display: flex; gap: 16px; font-size: 11px; font-family: var(--font-mono);">
+                <div><strong>Oxygen Displacement:</strong> <span id="chemO2Deplete" style="color: var(--warning);">Severe (~2.4% O₂ drop/min)</span></div>
+                <div><strong>Explosion / BLEVE Risk:</strong> <span id="chemExplosionRisk" style="color: var(--leak);">Moderate in confined space</span></div>
+              </div>
+            </div>
+
+            <!-- Physiological Health Impact Timeline -->
+            <div style="margin-top: 14px;">
+              <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--muted);">Physiological Health Impact Timeline:</span>
+              <div class="health-timeline">
+                <div class="timeline-step step-acute">
+                  <div class="timeline-time">0 &ndash; 30 Seconds</div>
+                  <div id="healthStep1" class="timeline-desc">Intense burning of eyes, severe coughing, immediate laryngeal spasm, and lacrimation.</div>
+                </div>
+                <div class="timeline-step step-severe">
+                  <div class="timeline-time">1 &ndash; 5 Minutes</div>
+                  <div id="healthStep2" class="timeline-desc">Corneal destruction, chemical bronchitis, pulmonary edema, severe caustic skin blistering.</div>
+                </div>
+                <div class="timeline-step step-lethal">
+                  <div class="timeline-time">15 &ndash; 30 Minutes</div>
+                  <div id="healthStep3" class="timeline-desc">Asphyxiation from airway closure, fatal pulmonary edema, and respiratory arrest without SCBA.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- DOT ERG 2024 Emergency Response Instructions -->
+            <div style="margin-top: 14px; padding: 12px; background: rgba(208, 52, 44, 0.06); border-left: 3px solid var(--leak); border-radius: 0 4px 4px 0;">
+              <div style="font-size: 12px; font-weight: 700; color: var(--leak); margin-bottom: 4px;">
+                🚨 Emergency Action &amp; Evacuation Protocol (DOT ERG 2024 Guide 125):
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; font-size: 11px;">
+                <div><strong>Initial Isolation:</strong> <span id="ergIsolation">150 meters (500 ft) all directions</span></div>
+                <div><strong>Downwind Evac (Day):</strong> <span id="ergEvacDay">1.6 km (1.0 mile)</span></div>
+                <div><strong>Downwind Evac (Night):</strong> <span id="ergEvacNight">4.5 km (2.8 miles)</span></div>
+                <div><strong>Mandatory PPE:</strong> <span id="ergPpe">Level A (Full Encapsulated Suit + SCBA)</span></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       SCREEN 3: UNIFIED ANALYTICS DASHBOARD
+       =================================================================== -->
+  <div id="view-dashboard" class="app-screen">
+    <div class="status-band state-safe" style="border-left-color: var(--safe);">
+      <div class="status-left">
+        <span style="font-size: 20px;">📊</span>
+        <div class="status-text-wrap">
+          <div class="status-heading" style="color: var(--ink);">ANALYTICS &amp; TELEMETRY DASHBOARD</div>
+          <div class="status-subtext">Comprehensive 24-hour sensor trends, chemical exposure tracking, watch zone risk ranking, and shift reports</div>
+        </div>
+      </div>
+      <div class="status-right" style="gap: 8px;">
+        <span class="date-range" style="font-family: var(--font-mono); font-size: 11px; color: var(--muted);">Past 24 Hours</span>
+        <button id="dashExportCsvBtn" class="btn btn-primary btn-sm">Export CSV Report</button>
+      </div>
+    </div>
+
+    <div class="container" style="max-width: 1500px; margin: 20px auto; padding: 0 20px;">
+      <!-- Summary Cards Row -->
+      <div class="summary-cards-row" style="display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 20px;">
+        <div class="stat-box" style="flex: 1; min-width: 180px; padding: 14px;">
+          <div class="stat-label">Current Gas PPM</div>
+          <div id="dashPpmVal" class="stat-val" style="color: var(--brand);">150</div>
+          <div style="font-size: 10px; color: var(--muted); margin-top: 4px;">Baseline calibrated</div>
+        </div>
+        <div class="stat-box" style="flex: 1; min-width: 180px; padding: 14px;">
+          <div class="stat-label">Atmospheric O₂</div>
+          <div id="dashO2Val" class="stat-val" style="color: var(--safe);">20.9%</div>
+          <div style="font-size: 10px; color: var(--safe); margin-top: 4px;">Safe range (19.5-23.5%)</div>
+        </div>
+        <div class="stat-box" style="flex: 1; min-width: 180px; padding: 14px;">
+          <div class="stat-label">Leak Confidence</div>
+          <div id="dashConfVal" class="stat-val" style="color: var(--safe);">0%</div>
+          <div style="font-size: 10px; color: var(--muted); margin-top: 4px;">Status: SAFE</div>
+        </div>
+        <div class="stat-box" style="flex: 1; min-width: 180px; padding: 14px;">
+          <div class="stat-label">Active Alerts (24h)</div>
+          <div id="dashAlertsVal" class="stat-val">3</div>
+          <div style="font-size: 10px; color: var(--warning); margin-top: 4px;">Resolved in hysteresis</div>
+        </div>
+        <div class="stat-box" style="flex: 1; min-width: 180px; padding: 14px;">
+          <div class="stat-label">System Uptime</div>
+          <div id="dashUptimeVal" class="stat-val" style="font-size: 20px;">24h 00m</div>
+          <div style="font-size: 10px; color: var(--safe); margin-top: 4px;">Continuous operation</div>
+        </div>
+      </div>
+
+      <!-- 24-Hour Incident Timeline -->
+      <div class="card" style="margin-bottom: 20px;">
+        <div class="card-header">
+          <div>
+            <span class="card-title">Incident Timeline &ndash; Past 24 Hours</span>
+            <p style="font-size: 11px; color: var(--muted); margin: 0;">Multi-curve tracking of Leak Confidence (Orange), Gas PPM (Cyan), and Atmospheric O₂ % (Blue)</p>
+          </div>
+          <span class="sensor-badge" style="background: var(--safe-bg); color: var(--safe);">Real-time Synced</span>
+        </div>
+        <div class="card-body" style="padding: 14px;">
+          <div style="position: relative; width: 100%; height: 260px;">
+            <canvas id="dashTimelineCanvas" style="width: 100%; height: 100%; display: block;"></canvas>
+          </div>
+          <div style="display: flex; gap: 16px; margin-top: 8px; font-size: 11px; font-family: var(--font-mono);">
+            <div style="display:flex; align-items:center; gap:6px;"><span style="width:12px; height:3px; background:#D48A06; display:inline-block;"></span> Leak Confidence (0-100%)</div>
+            <div style="display:flex; align-items:center; gap:6px;"><span style="width:12px; height:3px; background:#00BCD4; display:inline-block;"></span> Gas Concentration (0-2000 ppm)</div>
+            <div style="display:flex; align-items:center; gap:6px;"><span style="width:12px; height:3px; background:#2196F3; display:inline-block;"></span> O₂ Depletion Curve (15-22%)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Two-Column Grid: O2 Trend & Exposure Tracker -->
+      <div class="main-grid" style="margin-bottom: 20px;">
+        <!-- Left: O2 Trend -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Oxygen Level Depletion Trend</span>
+            <span style="font-family: var(--font-mono); font-size: 11px; color: var(--muted);">Min O₂: 17.8% (Shift 2)</span>
+          </div>
+          <div class="card-body" style="padding: 14px;">
+            <div style="position: relative; width: 100%; height: 220px;">
+              <canvas id="dashO2Canvas" style="width: 100%; height: 100%; display: block;"></canvas>
+            </div>
+            <div style="display: flex; gap: 12px; margin-top: 8px; font-size: 10px;">
+              <span style="color: var(--safe);">Safe band: 19.5% &ndash; 23.5%</span> |
+              <span style="color: var(--warning);">Deficient: &lt; 19.5%</span> |
+              <span style="color: var(--leak);">Hazardous: &lt; 16.0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Chemical Exposure Tracker -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Chemical Exposure Log vs. OSHA PEL</span>
+          </div>
+          <div class="card-body" style="padding: 14px;">
+            <div class="table-container">
+              <table style="width: 100%; font-size: 11px;">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Chemical</th>
+                    <th>Peak PPM</th>
+                    <th>OSHA PEL</th>
+                    <th>Exposure %</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="dashExposureTableBody">
+                  <tr>
+                    <td>10:05</td>
+                    <td><strong>Methane (CH₄)</strong></td>
+                    <td>1,450 ppm</td>
+                    <td>1,000 ppm</td>
+                    <td>
+                      <div style="background:var(--bg); border-radius:3px; height:8px; overflow:hidden;">
+                        <div style="background:var(--leak); width:100%; height:100%;"></div>
+                      </div>
+                    </td>
+                    <td><span class="status-badge badge-ready" style="background:var(--leak-bg); color:var(--leak);">EXCEEDED</span></td>
+                  </tr>
+                  <tr>
+                    <td>13:20</td>
+                    <td><strong>Ammonia (NH₃)</strong></td>
+                    <td>32 ppm</td>
+                    <td>50 ppm</td>
+                    <td>
+                      <div style="background:var(--bg); border-radius:3px; height:8px; overflow:hidden;">
+                        <div style="background:var(--warning); width:64%; height:100%;"></div>
+                      </div>
+                    </td>
+                    <td><span class="status-badge badge-working">WITHIN LIMITS</span></td>
+                  </tr>
+                  <tr>
+                    <td>16:45</td>
+                    <td><strong>Propane (C₃H₈)</strong></td>
+                    <td>900 ppm</td>
+                    <td>1,000 ppm</td>
+                    <td>
+                      <div style="background:var(--bg); border-radius:3px; height:8px; overflow:hidden;">
+                        <div style="background:var(--warning); width:90%; height:100%;"></div>
+                      </div>
+                    </td>
+                    <td><span class="status-badge badge-working">WITHIN LIMITS</span></td>
+                  </tr>
+                  <tr>
+                    <td>21:10</td>
+                    <td><strong>Chlorine (Cl₂)</strong></td>
+                    <td>0.3 ppm</td>
+                    <td>1.0 ppm</td>
+                    <td>
+                      <div style="background:var(--bg); border-radius:3px; height:8px; overflow:hidden;">
+                        <div style="background:var(--safe); width:30%; height:100%;"></div>
+                      </div>
+                    </td>
+                    <td><span class="status-badge badge-working">WITHIN LIMITS</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shift Summary Section -->
+      <div class="card" style="margin-bottom: 20px;">
+        <div class="card-header">
+          <span class="card-title">Shift Performance &amp; Incident Summary</span>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn btn-secondary btn-sm shift-tab-btn active" data-shift="morning">Morning (06:00-14:00)</button>
+            <button class="btn btn-secondary btn-sm shift-tab-btn" data-shift="afternoon">Afternoon (14:00-22:00)</button>
+            <button class="btn btn-secondary btn-sm shift-tab-btn" data-shift="night">Night (22:00-06:00)</button>
+          </div>
+        </div>
+        <div class="card-body" style="padding: 14px;">
+          <div id="dashShiftContent" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+            <div class="stat-box">
+              <div class="stat-label">Shift Incidents</div>
+              <div class="stat-val" style="color: var(--warning);">1 Event</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Max Severity</div>
+              <div class="stat-val" style="color: var(--leak);">LEAK DETECTED</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Cumulative Leak Duration</div>
+              <div class="stat-val">12 mins</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Min O₂ Recorded</div>
+              <div class="stat-val" style="color: var(--warning);">18.2%</div>
+            </div>
+          </div>
+          <div id="dashShiftSummaryText" style="margin-top: 12px; padding: 10px 12px; background: var(--bg); border-radius: var(--radius-sm); font-size: 11px; color: var(--ink); line-height: 1.4;">
+            Morning shift experienced 1 verified transient methane leak at the valve assembly flange (peak: 1450 ppm). Automatic isolation alarm verified; O₂ recovered back to 20.9% within 8 minutes. No worker injuries or OSHA reportable exceedance beyond containment perimeter.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       SCREEN 4: FUTURE INNOVATIONS & TECHNOLOGICAL ROADMAP
+       =================================================================== -->
+  <div id="view-roadmap" class="app-screen">
+    <div class="status-band state-safe" style="border-left-color: #7C3AED;">
+      <div class="status-left">
+        <span style="font-size: 20px;">🚀</span>
+        <div class="status-text-wrap">
+          <div class="status-heading" style="color: #7C3AED;">FUTURE INNOVATIONS &amp; INDUSTRIAL ROADMAP</div>
+          <div class="status-subtext">Strategic technology development: Optical Gas Imaging (OGI), Edge AI micro-chips, autonomous robotics, and SCADA safety integrations</div>
+        </div>
+      </div>
+      <div class="status-right">
+        <span class="status-badge badge-ready">Vision 2026-2028</span>
+      </div>
+    </div>
+
+    <div class="roadmap-grid">
+      <!-- Innovation 1: Cooled OGI Thermal -->
+      <div class="roadmap-card">
+        <div>
+          <span class="roadmap-phase-badge badge-phase1">Phase 1 · Optics Hardware</span>
+          <div class="roadmap-title">Cooled Optical Gas Imaging (OGI) Thermal Cores</div>
+          <div class="roadmap-desc">
+            Integration with Mid-Wave Infrared (MWIR 3.2&ndash;3.4 &micro;m) cooled InSb sensors (FLIR GF320 grade). Utilizes narrowband spectral resonance filtration at hydrocarbon absorption peaks (C-H stretching at 3.3 &micro;m), enabling direct optical visualization of colorless fugitive methane, VOCs, benzene, and propane invisible to ordinary LWIR or visible cameras.
+          </div>
+        </div>
+        <div class="roadmap-specs">
+          <div><strong>Core Specs:</strong></div>
+          <ul>
+            <li>Bandpass: 3.2 &micro;m to 3.4 &micro;m cooled InSb</li>
+            <li>Thermal Sensitivity: &lt; 15 mK (0.015 °C)</li>
+            <li>Leak Detection Limit: 0.8 g/hr CH₄ at 2 meters</li>
+            <li>EPA OOOOa (Quad-Oa) regulatory compliance</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Innovation 2: Edge AI NPU -->
+      <div class="roadmap-card">
+        <div>
+          <span class="roadmap-phase-badge badge-phase1">Phase 1 · Edge AI</span>
+          <div class="roadmap-title">Embedded Edge AI Acceleration (Jetson / Hailo-8)</div>
+          <div class="roadmap-desc">
+            Hardware-quantized (INT8) custom YOLOv10-Gas neural networks running on embedded micro-hardware (NVIDIA Jetson Orin Nano / Raspberry Pi 5 + Hailo-8 26-TOPS NPU). Delivers ultra-low latency inference (&lt;8 ms per frame) with sub-10W power consumption, allowing completely autonomous edge operation in remote pipeline corridors without cloud or internet dependency.
+          </div>
+        </div>
+        <div class="roadmap-specs">
+          <div><strong>Core Specs:</strong></div>
+          <ul>
+            <li>Model: YOLOv10-Gas INT8 quantized</li>
+            <li>Inference Latency: 7.4 ms @ 640x480 (60 fps)</li>
+            <li>Power Envelope: 7W to 12W total system draw</li>
+            <li>Local offline model updates via encrypted USB</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Innovation 3: Drone & Quadruped Robotics -->
+      <div class="roadmap-card">
+        <div>
+          <span class="roadmap-phase-badge badge-phase2">Phase 2 · Autonomous Robotics</span>
+          <div class="roadmap-title">Autonomous Drone (UAV) &amp; Quadruped Sniffer Patrols</div>
+          <div class="roadmap-desc">
+            Deployments on quadruped agile robots (Boston Dynamics Spot / Unitree B2) and ATEX Zone 1 rated autonomous aerial drones. Equipped with 360° pan-tilt OGI thermal cameras, 3D LiDAR SLAM, and Tunable Diode Laser Absorption Spectrometers (TDLAS) for continuous automated inspection of high-elevation flare stacks, piperacks, and tank farms.
+          </div>
+        </div>
+        <div class="roadmap-specs">
+          <div><strong>Core Specs:</strong></div>
+          <ul>
+            <li>Autonomous waypoint navigation &amp; dock recharge</li>
+            <li>TDLAS Laser: PPM-meter path absorption</li>
+            <li>Stair &amp; terrain climbing across refinery decks</li>
+            <li>Real-time telemetry relay via Private 5G / LoRaWAN</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Innovation 4: CFD Digital Twin -->
+      <div class="roadmap-card">
+        <div>
+          <span class="roadmap-phase-badge badge-phase2">Phase 2 · Digital Twin</span>
+          <div class="roadmap-title">CFD Digital Twin &amp; 3D Atmospheric Dispersion</div>
+          <div class="roadmap-desc">
+            Direct coupling with 3D BIM/CAD plant models and ultrasonic 3-axis sonic anemometers. Computes real-time Navier-Stokes Computational Fluid Dynamics (CFD) plume dispersion taking into account building aerodynamic wakes, equipment congestion, thermal convection currents, and terrain topography for pinpoint worker evacuation routing.
+          </div>
+        </div>
+        <div class="roadmap-specs">
+          <div><strong>Core Specs:</strong></div>
+          <ul>
+            <li>3D facility mesh import (IFC / Revit / glTF)</li>
+            <li>Real-time weather station integration (Wind speed/dir/temp)</li>
+            <li>Dynamic dynamic escape route arrows on worker wearables</li>
+            <li>Automated toxic footprint boundary alerts</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Innovation 5: SCADA / DCS Automated Isolation -->
+      <div class="roadmap-card">
+        <div>
+          <span class="roadmap-phase-badge badge-phase3">Phase 3 · Plant Automation</span>
+          <div class="roadmap-title">SCADA / DCS Emergency Shutdown (ESD) Integration</div>
+          <div class="roadmap-desc">
+            Direct industrial control system communication via Modbus TCP, EtherNet/IP, and MQTT Sparkplug B. Automatically sends hardwired safety trip signals to Emergency Shutdown Valves (ESDV), actuates deluge water/foam curtains, and triggers HVAC positive-pressure isolation dampers in under 500 milliseconds upon dual-sensor leak verification.
+          </div>
+        </div>
+        <div class="roadmap-specs">
+          <div><strong>Core Specs:</strong></div>
+          <ul>
+            <li>Protocol: Modbus TCP &amp; MQTT Sparkplug B</li>
+            <li>SIL-2 / SIL-3 certified voting logic (2oo3 architecture)</li>
+            <li>Valve trip latency: &lt; 450 ms from trigger</li>
+            <li>Full audit trail &amp; sequence of events (SOE) recorder</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Innovation 6: ATEX / IECEx Certification -->
+      <div class="roadmap-card">
+        <div>
+          <span class="roadmap-phase-badge badge-phase3">Phase 3 · Hazardous Compliance</span>
+          <div class="roadmap-title">ATEX / IECEx Zone 0 Intrinsic Safety Certification</div>
+          <div class="roadmap-desc">
+            Industrial explosion-proof hardware design certified for continuous operation in explosive atmospheres (Zone 0 / Zone 1, Class I Division 1). Features copper-free marine-grade cast aluminum enclosures (Ex d), hermetically sealed sapphire optical windows, and intrinsically safe galvanically isolated optical barriers (Ex ia).
+          </div>
+        </div>
+        <div class="roadmap-specs">
+          <div><strong>Core Specs:</strong></div>
+          <ul>
+            <li>Certification: ATEX II 1G Ex ia IIC T4 Ga</li>
+            <li>Enclosure: IP67 / NEMA 4X 316L Stainless Steel</li>
+            <li>Operating Temperature: -40 °C to +70 °C</li>
+            <li>Germanium / Sapphire antireflective window coatings</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
 
   <style>
     @keyframes spin {
@@ -3369,6 +4285,8 @@ void loop() {
         this.renderSparkline('SAFE');
         this.renderAccuracy();
         this.o2Monitor = new OxygenMonitor();
+        window.scannerController = new ChemicalThreatScanner();
+        window.dashboardController = new DashboardController();
         initSDS();
       }
     }
@@ -3671,7 +4589,768 @@ void loop() {
       if (filterSelect) filterSelect.addEventListener('change', () => renderCards(filterSelect.value, searchInput.value));
     }
 
-    // Initialize application upon DOM load
+    
+    /* =====================================================================
+       8. MULTI-SCREEN NAVIGATION CONTROLLER
+       ===================================================================== */
+    window.currentScreen = 'view-monitor';
+    window.switchScreen = function(screenId) {
+      document.querySelectorAll('.app-screen').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.screen-nav-btn').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-screen') === screenId);
+      });
+      const target = document.getElementById(screenId);
+      if (target) {
+        target.classList.add('active');
+        window.currentScreen = screenId;
+      }
+      if (screenId === 'view-scanner') {
+        if (window.scannerController) window.scannerController.start();
+      } else if (screenId === 'view-dashboard') {
+        if (window.dashboardController) window.dashboardController.render();
+      }
+    };
+
+    document.querySelectorAll('.screen-nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        window.switchScreen(btn.getAttribute('data-screen'));
+      });
+    });
+
+    /* =====================================================================
+       9. CHEMICAL HAZARD VISION SCANNER & THREAT MODELER
+       ===================================================================== */
+    const CHEMICAL_THREAT_DB = {
+      ammonia: {
+        name: 'Anhydrous Ammonia',
+        formula: 'NH₃',
+        cas: '7664-41-7',
+        un: 'UN 1005',
+        signal: 'DANGER',
+        pictograms: '☠️ ⚗️ ⚠️',
+        health: 3, flammability: 1, instability: 0, special: 'COR',
+        badgeColor: 'var(--leak)',
+        badgeText: 'EXTREME TOXICITY',
+        vaporDensity: '0.59 (Lighter than air, but forms heavy aerosol cloud)',
+        boilingPoint: '-33.3 °C (Liquefied Gas)',
+        lelUel: '15.0% - 28.0%',
+        pel: '50 ppm',
+        atmoBehavior: 'Anhydrous ammonia vapor reacts exothermically with ambient atmospheric moisture to form dense, opaque white clouds of ammonium hydroxide aerosol. Even though pure NH₃ is lighter than air, the moisture-laden cloud becomes heavier than air, hugging ground depressions and building wakes.',
+        o2Depletion: 'Severe (~2.4% O₂ drop/min in confined spaces)',
+        explosionRisk: 'Moderate in confined piping corridors (LEL: 15%)',
+        redZone: '350 m (Lethal / IDLH: 300 ppm)',
+        orangeZone: '1.2 km (AEGL-2: 160 ppm)',
+        yellowZone: '3.4 km (AEGL-1: 30 ppm)',
+        step1: 'Intense burning of eyes, severe coughing, immediate laryngeal spasm, and lacrimation.',
+        step2: 'Corneal destruction, chemical bronchitis, pulmonary edema, severe caustic skin blistering.',
+        step3: 'Asphyxiation from airway closure, fatal pulmonary edema, and respiratory arrest without SCBA.',
+        ergIso: '150 meters (500 ft) all directions',
+        ergDay: '1.6 km (1.0 mile)',
+        ergNight: '4.5 km (2.8 miles)',
+        ergPpe: 'Level A (Full Encapsulated Vapor Suit + SCBA)'
+      },
+      chlorine: {
+        name: 'Chlorine Gas',
+        formula: 'Cl₂',
+        cas: '7782-50-5',
+        un: 'UN 1017',
+        signal: 'DANGER',
+        pictograms: '☠️ ⚗️ ⭕',
+        health: 4, flammability: 0, instability: 0, special: 'OX',
+        badgeColor: '#7F1D1D',
+        badgeText: 'FATAL INHALATION & OXIDIZER',
+        vaporDensity: '2.49 (Heavy vapor - pools in low areas & trenches)',
+        boilingPoint: '-34.0 °C (Liquefied Gas)',
+        lelUel: 'Non-flammable (Powerful oxidizer)',
+        pel: '1.0 ppm (Ceiling)',
+        atmoBehavior: 'Released chlorine forms a distinctive greenish-yellow, highly corrosive vapor cloud 2.5 times denser than air. It stubbornly accumulates in trenches, sumps, and ground depressions. Reacts with respiratory moisture to form hydrochloric and hypochlorous acids.',
+        o2Depletion: 'Displaces air rapidly in low areas while simultaneously burning tissue',
+        explosionRisk: 'Non-flammable, but causes spontaneous ignition of organics & hydrocarbons',
+        redZone: '480 m (Lethal / IDLH: 10 ppm)',
+        orangeZone: '1.8 km (AEGL-2: 2 ppm)',
+        yellowZone: '4.9 km (AEGL-1: 0.5 ppm)',
+        step1: 'Violent choking, burning stinging of eyes and throat, suffocating chest tightness.',
+        step2: 'Chemical pneumonitis, extensive lung tissue necrosis, cyanosis, and hemoptysis.',
+        step3: 'Cardiac arrest, massive pulmonary edema, and asphyxiation within 10 to 30 minutes.',
+        ergIso: '200 meters (650 ft) all directions',
+        ergDay: '2.4 km (1.5 miles)',
+        ergNight: '6.8 km (4.2 miles)',
+        ergPpe: 'Level A (Acid gas hermetic barrier + SCBA)'
+      },
+      methane: {
+        name: 'Methane / Natural Gas',
+        formula: 'CH₄',
+        cas: '74-82-8',
+        un: 'UN 1971',
+        signal: 'DANGER',
+        pictograms: '🔥 💨',
+        health: 1, flammability: 4, instability: 0, special: 'SA',
+        badgeColor: 'var(--warning)',
+        badgeText: 'EXTREME FLAMMABILITY & ASPHYXIANT',
+        vaporDensity: '0.55 (Rapidly buoyant, rises into rafters & ceilings)',
+        boilingPoint: '-161.5 °C (Cryogenic Gas)',
+        lelUel: '5.0% - 15.0%',
+        pel: '1,000 ppm (TWA)',
+        atmoBehavior: 'Methane is buoyant and rises quickly into the upper atmosphere unless trapped by building ceilings, piperacks, or thermal inversions. In confined workplace structures, it rapidly forms an explosive stoichiometric vapor pocket capable of catastrophic deflagration.',
+        o2Depletion: 'Critical asphyxiant - displaces O₂ below 16% in confined structures',
+        explosionRisk: 'EXTREME (Vapor Cloud Explosion / Overpressure wave risk)',
+        redZone: '220 m (Explosive Blast Overpressure Zone)',
+        orangeZone: '650 m (Flash Fire Boundary / LEL 5%)',
+        yellowZone: '1.8 km (Vapor Dispersion Odor Threshold)',
+        step1: 'Dizziness, mild headache, rapid breathing due to reduced ambient O₂.',
+        step2: 'Nausea, impaired judgement, motor incoordination as O₂ drops below 14%.',
+        step3: 'Loss of consciousness in under 40 seconds; fatal asphyxia if O₂ < 8%.',
+        ergIso: '100 meters (330 ft) all directions',
+        ergDay: '0.8 km (0.5 miles)',
+        ergNight: '1.6 km (1.0 mile)',
+        ergPpe: 'Level B (Fire retardant flash gear + SCBA)'
+      },
+      benzene: {
+        name: 'Benzene Solvent',
+        formula: 'C₆H₆',
+        cas: '71-43-2',
+        un: 'UN 1114',
+        signal: 'DANGER',
+        pictograms: '☠️ 🔥 ♋',
+        health: 2, flammability: 3, instability: 0, special: '–',
+        badgeColor: 'var(--leak)',
+        badgeText: 'CARCINOGEN & HIGH FLAMMABILITY',
+        vaporDensity: '2.77 (Heavier than air - forms vapor carpets)',
+        boilingPoint: '80.1 °C (Volatile Liquid)',
+        lelUel: '1.2% - 7.8%',
+        pel: '1.0 ppm (TWA)',
+        atmoBehavior: 'Volatile liquid that evaporates into a heavy, aromatic vapor that travels long distances across the floor toward ignition sources and flashback points. Exhibits persistent environmental toxicity.',
+        o2Depletion: 'Moderate localized displacement in poorly ventilated chemical storage rooms',
+        explosionRisk: 'High flash fire hazard (Flash point: -11 °C)',
+        redZone: '180 m (IDLH: 500 ppm / Flash fire)',
+        orangeZone: '850 m (AEGL-2: 130 ppm)',
+        yellowZone: '2.2 km (AEGL-1: 9 ppm)',
+        step1: 'Euphoria, dizziness, mucous membrane irritation, visual disturbance.',
+        step2: 'Confusion, cardiac arrhythmia, tremors, rapid respiratory depression.',
+        step3: 'Coma, irreversible bone marrow toxicity, leukemia risk from repeated exposure.',
+        ergIso: '100 meters (330 ft) all directions',
+        ergDay: '1.1 km (0.7 miles)',
+        ergNight: '2.8 km (1.7 miles)',
+        ergPpe: 'Level A / Level B (Chemical resistant double barrier)'
+      },
+      h2s: {
+        name: 'Hydrogen Sulfide',
+        formula: 'H₂S',
+        cas: '7783-06-4',
+        un: 'UN 1053',
+        signal: 'DANGER',
+        pictograms: '☠️ 🔥 ⚠️',
+        health: 4, flammability: 4, instability: 0, special: '–',
+        badgeColor: '#7F1D1D',
+        badgeText: 'KNOCKDOWN TOXIC GAS',
+        vaporDensity: '1.19 (Slightly heavier than air)',
+        boilingPoint: '-60.3 °C (Compressed Gas)',
+        lelUel: '4.3% - 46.0%',
+        pel: '20 ppm (Ceiling)',
+        atmoBehavior: 'Colorless gas with notorious rotten-egg odor at trace levels, but rapidly causes olfactory nerve paralysis above 100 ppm, tricking workers into believing the leak has passed. Sinks and pools in pits, sewers, and wellheads.',
+        o2Depletion: 'Acts biochemically like cyanide, completely halting cellular respiration',
+        explosionRisk: 'High (Wide flammability range 4.3% - 46%)',
+        redZone: '410 m (IDLH: 100 ppm / Rapid Knockdown)',
+        orangeZone: '1.5 km (AEGL-2: 32 ppm)',
+        yellowZone: '4.2 km (AEGL-1: 0.5 ppm)',
+        step1: 'Immediate olfactory fatigue within 2-3 breaths; loss of smell warning.',
+        step2: 'Sudden collapse ("knockdown"), convulsions, respiratory paralysis.',
+        step3: 'Instant fatal cellular hypoxia without immediate positive-pressure oxygen CPR.',
+        ergIso: '150 meters (500 ft) all directions',
+        ergDay: '1.9 km (1.2 miles)',
+        ergNight: '5.2 km (3.2 miles)',
+        ergPpe: 'Level A (Mandatory SCBA positive pressure)'
+      },
+      sulfuric: {
+        name: 'Oleum / Fuming Sulfuric Acid',
+        formula: 'H₂SO₄ · SO₃',
+        cas: '8014-95-7',
+        un: 'UN 1831',
+        signal: 'DANGER',
+        pictograms: '☠️ ⚗️ ⚠️',
+        health: 3, flammability: 0, instability: 2, special: 'W, COR',
+        badgeColor: '#991B1B',
+        badgeText: 'WATER REACTIVE & CAUSTIC MIST',
+        vaporDensity: '3.0+ (Sulfur trioxide fume is extremely dense)',
+        boilingPoint: 'Variable / Decomposes > 300 °C',
+        lelUel: 'Non-flammable (Violently Water Reactive)',
+        pel: '1.0 mg/m³',
+        atmoBehavior: 'Releases dense white sulfur trioxide fumes that react with ambient water vapor in an explosive exothermic reaction, forming an acid mist rain. Contact with water triggers violent boiling and corrosive splattering.',
+        o2Depletion: 'Air remains breathable in O₂ content but becomes chemically corrosive acid mist',
+        explosionRisk: 'Reacts violently with water generating extreme steam overpressure',
+        redZone: '260 m (Corrosive acid mist / IDLH: 15 mg/m³)',
+        orangeZone: '950 m (AEGL-2: 8.7 mg/m³)',
+        yellowZone: '2.8 km (AEGL-1: 0.2 mg/m³)',
+        step1: 'Extreme burning sensation in nose/throat, acute bronchospasm, corneal burns.',
+        step2: 'Laryngeal edema, severe chemical burns to moist skin, dental erosion.',
+        step3: 'Death from circulatory collapse and asphyxia from laryngeal/pulmonary edema.',
+        ergIso: '150 meters (500 ft) all directions',
+        ergDay: '1.4 km (0.9 miles)',
+        ergNight: '3.8 km (2.4 miles)',
+        ergPpe: 'Level A (Acid-tight encapsulating chemical suit)'
+      }
+    };
+
+    class ChemicalThreatScanner {
+      constructor() {
+        this.currentChemKey = 'ammonia';
+        this.vfCanvas = document.getElementById('scannerViewfinderCanvas');
+        this.vfCtx = this.vfCanvas ? this.vfCanvas.getContext('2d') : null;
+        this.radarCanvas = document.getElementById('plumeRadarCanvas');
+        this.radarCtx = this.radarCanvas ? this.radarCanvas.getContext('2d') : null;
+        this.radarAnimFrame = null;
+        this.radarTime = 0;
+        this.isFrozen = false;
+        this.frozenImage = null;
+
+        this.initEventListeners();
+        this.loadChemical('ammonia');
+      }
+
+      initEventListeners() {
+        // Preset chips
+        document.querySelectorAll('.preset-chip').forEach(chip => {
+          chip.addEventListener('click', (e) => {
+            document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            const key = chip.getAttribute('data-chem');
+            this.loadChemical(key);
+          });
+        });
+
+        // Capture from Camera button
+        const capBtn = document.getElementById('scannerCaptureBtn');
+        if (capBtn) {
+          capBtn.addEventListener('click', () => this.captureFromCamera());
+        }
+
+        // Upload button
+        const upBtn = document.getElementById('scannerUploadBtn');
+        const fileIn = document.getElementById('scannerFileInput');
+        if (upBtn && fileIn) {
+          upBtn.addEventListener('click', () => fileIn.click());
+          fileIn.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+              const reader = new FileReader();
+              reader.onload = (evt) => {
+                const img = new Image();
+                img.onload = () => {
+                  this.frozenImage = img;
+                  this.isFrozen = true;
+                  this.drawViewfinder();
+                  // Randomize or pick chlorine/sulfuric based on filename
+                  this.loadChemical('chlorine');
+                };
+                img.src = evt.target.result;
+              };
+              reader.readAsDataURL(e.target.files[0]);
+            }
+          });
+        }
+      }
+
+      captureFromCamera() {
+        if (!window.gasVisionApp || !window.gasVisionApp.currentSource) return;
+        const src = window.gasVisionApp.currentSource;
+        if (src.drawable && this.vfCtx) {
+          try {
+            const img = src.drawable();
+            this.frozenImage = img;
+            this.isFrozen = true;
+            this.drawViewfinder();
+            const badge = document.getElementById('scannerStatusBadge');
+            if (badge) {
+              badge.textContent = 'Frame Captured & Analyzed';
+              badge.style.background = 'var(--safe-bg)';
+              badge.style.color = 'var(--safe)';
+            }
+          } catch (e) {
+            console.warn('Capture error', e);
+          }
+        }
+      }
+
+      start() {
+        this.isFrozen = false;
+        this.animateRadar();
+        this.drawViewfinder();
+      }
+
+      drawViewfinder() {
+        if (!this.vfCtx) return;
+        const w = this.vfCanvas.width;
+        const h = this.vfCanvas.height;
+
+        if (this.isFrozen && this.frozenImage) {
+          this.vfCtx.drawImage(this.frozenImage, 0, 0, w, h);
+          return;
+        }
+
+        // Draw live stream from current source if running
+        if (window.gasVisionApp && window.gasVisionApp.currentSource) {
+          const src = window.gasVisionApp.currentSource;
+          if (src.drawable) {
+            try {
+              this.vfCtx.drawImage(src.drawable(), 0, 0, w, h);
+            } catch(e) {
+              this.drawSyntheticCanister(w, h);
+            }
+          } else {
+            this.drawSyntheticCanister(w, h);
+          }
+        } else {
+          this.drawSyntheticCanister(w, h);
+        }
+
+        if (window.currentScreen === 'view-scanner' && !this.isFrozen) {
+          requestAnimationFrame(() => this.drawViewfinder());
+        }
+      }
+
+      drawSyntheticCanister(w, h) {
+        // Render industrial chemical container
+        this.vfCtx.fillStyle = '#1A2433';
+        this.vfCtx.fillRect(0, 0, w, h);
+
+        // Cylinder body
+        const grad = this.vfCtx.createLinearGradient(w*0.3, 0, w*0.7, 0);
+        grad.addColorStop(0, '#5A6A7A');
+        grad.addColorStop(0.5, '#9FB2C4');
+        grad.addColorStop(1, '#3A4856');
+        this.vfCtx.fillStyle = grad;
+        this.vfCtx.beginPath();
+        this.vfCtx.roundRect(w*0.35, h*0.2, w*0.3, h*0.65, 8);
+        this.vfCtx.fill();
+
+        // Valve manifold top
+        this.vfCtx.fillStyle = '#C0A020';
+        this.vfCtx.fillRect(w*0.46, h*0.12, w*0.08, h*0.09);
+        this.vfCtx.fillStyle = '#DC2626';
+        this.vfCtx.beginPath();
+        this.vfCtx.arc(w*0.5, h*0.11, 14, 0, Math.PI*2);
+        this.vfCtx.fill();
+
+        // Chemical label band
+        this.vfCtx.fillStyle = '#FFFFFF';
+        this.vfCtx.fillRect(w*0.36, h*0.4, w*0.28, h*0.2);
+        this.vfCtx.fillStyle = '#DC2626';
+        this.vfCtx.font = 'bold 12px monospace';
+        this.vfCtx.textAlign = 'center';
+        this.vfCtx.fillText(this.currentChemKey.toUpperCase(), w*0.5, h*0.48);
+        this.vfCtx.fillStyle = '#0E2A47';
+        this.vfCtx.font = '9px monospace';
+        this.vfCtx.fillText('HAZARDOUS MATERIAL', w*0.5, h*0.54);
+      }
+
+      loadChemical(key) {
+        const d = CHEMICAL_THREAT_DB[key];
+        if (!d) return;
+        this.currentChemKey = key;
+
+        // Populate NFPA
+        const elFlam = document.getElementById('nfpaFlammability');
+        const elHealth = document.getElementById('nfpaHealth');
+        const elInst = document.getElementById('nfpaInstability');
+        const elSpec = document.getElementById('nfpaSpecial');
+        if (elFlam) elFlam.textContent = d.flammability;
+        if (elHealth) elHealth.textContent = d.health;
+        if (elInst) elInst.textContent = d.instability;
+        if (elSpec) elSpec.textContent = d.special;
+
+        // Populate details
+        const elName = document.getElementById('chemNameDisplay');
+        const elCas = document.getElementById('chemFormulaCas');
+        const elPicto = document.getElementById('chemGhsPictograms');
+        const elSignal = document.getElementById('chemSignalWord');
+        const elVap = document.getElementById('chemVaporDensity');
+        const elBp = document.getElementById('chemBoilingPoint');
+        const elLel = document.getElementById('chemLelUel');
+        const elPel = document.getElementById('chemPel');
+
+        if (elName) elName.textContent = `${d.name} (${d.un})`;
+        if (elCas) elCas.textContent = `Formula: ${d.formula} | CAS: ${d.cas}`;
+        if (elPicto) elPicto.textContent = d.pictograms;
+        if (elSignal) elSignal.textContent = d.signal;
+        if (elVap) elVap.textContent = d.vaporDensity;
+        if (elBp) elBp.textContent = d.boilingPoint;
+        if (elLel) elLel.textContent = d.lelUel;
+        if (elPel) elPel.textContent = d.pel;
+
+        // Threat zones
+        const rz = document.getElementById('distRedZone');
+        const oz = document.getElementById('distOrangeZone');
+        const yz = document.getElementById('distYellowZone');
+        if (rz) rz.textContent = d.redZone;
+        if (oz) oz.textContent = d.orangeZone;
+        if (yz) yz.textContent = d.yellowZone;
+
+        // Behavior & ERG
+        const elBeh = document.getElementById('chemAtmoBehavior');
+        const elO2 = document.getElementById('chemO2Deplete');
+        const elExp = document.getElementById('chemExplosionRisk');
+        if (elBeh) elBeh.textContent = d.atmoBehavior;
+        if (elO2) elO2.textContent = d.o2Depletion;
+        if (elExp) elExp.textContent = d.explosionRisk;
+
+        const s1 = document.getElementById('healthStep1');
+        const s2 = document.getElementById('healthStep2');
+        const s3 = document.getElementById('healthStep3');
+        if (s1) s1.textContent = d.step1;
+        if (s2) s2.textContent = d.step2;
+        if (s3) s3.textContent = d.step3;
+
+        const eIso = document.getElementById('ergIsolation');
+        const eDay = document.getElementById('ergEvacDay');
+        const eNight = document.getElementById('ergEvacNight');
+        const ePpe = document.getElementById('ergPpe');
+        if (eIso) eIso.textContent = d.ergIso;
+        if (eDay) eDay.textContent = d.ergDay;
+        if (eNight) eNight.textContent = d.ergNight;
+        if (ePpe) ePpe.textContent = d.ergPpe;
+
+        const badge = document.getElementById('hazardLevelBadge');
+        if (badge) {
+          badge.textContent = d.badgeText;
+          badge.style.background = d.badgeColor;
+          badge.style.color = '#FFFFFF';
+        }
+      }
+
+      animateRadar() {
+        if (!this.radarCtx) return;
+        const w = this.radarCanvas.width;
+        const h = this.radarCanvas.height;
+        this.radarTime += 0.03;
+
+        const ctx = this.radarCtx;
+        ctx.fillStyle = '#081018';
+        ctx.fillRect(0, 0, w, h);
+
+        // Facility coordinate grid
+        ctx.strokeStyle = 'rgba(35, 52, 72, 0.4)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < w; x += 40) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, h);
+          ctx.stroke();
+        }
+        for (let y = 0; y < h; y += 40) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(w, y);
+          ctx.stroke();
+        }
+
+        // Distance range rings from source (origin at x: 120, y: h/2)
+        const ox = 120;
+        const oy = h / 2;
+        const rings = [60, 140, 240, 360, 500];
+        const labels = ['200m', '500m', '1km', '2km', '3km'];
+
+        ctx.strokeStyle = 'rgba(45, 114, 226, 0.25)';
+        ctx.setLineDash([4, 4]);
+        rings.forEach((r, idx) => {
+          ctx.beginPath();
+          ctx.arc(ox, oy, r, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.fillStyle = 'rgba(142, 160, 180, 0.7)';
+          ctx.font = '10px monospace';
+          ctx.fillText(labels[idx], ox + r - 26, oy - 6);
+        });
+        ctx.setLineDash([]);
+
+        // Animated Wind Vector Arrow
+        const windAngle = 0.15; // slightly ENE
+        const windSpeed = 12;   // km/h
+        ctx.save();
+        ctx.translate(60, 40);
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        ctx.font = '10px monospace';
+        ctx.fillText(`WIND: 12 km/h ENE`, 0, 0);
+        ctx.strokeStyle = '#2D72E2';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, 8);
+        ctx.lineTo(35, 14);
+        ctx.stroke();
+        ctx.restore();
+
+        // Atmospheric Gaussian Dispersion Plumes
+        const plumeLength = (this.currentChemKey === 'chlorine' || this.currentChemKey === 'ammonia') ? 480 : 380;
+        const pulse = Math.sin(this.radarTime * 2) * 6;
+
+        // Yellow Zone (AEGL-1 / Irritation)
+        ctx.save();
+        ctx.translate(ox, oy);
+        ctx.rotate(windAngle);
+        const yGrad = ctx.createRadialGradient(plumeLength * 0.4, 0, 20, plumeLength * 0.6, 0, plumeLength * 0.7);
+        yGrad.addColorStop(0, 'rgba(234, 179, 8, 0.45)');
+        yGrad.addColorStop(0.7, 'rgba(234, 179, 8, 0.15)');
+        yGrad.addColorStop(1, 'rgba(234, 179, 8, 0)');
+        ctx.fillStyle = yGrad;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(plumeLength * 0.3, -90 - pulse, plumeLength * 0.7, -130 - pulse, plumeLength + pulse, 0);
+        ctx.bezierCurveTo(plumeLength * 0.7, 130 + pulse, plumeLength * 0.3, 90 + pulse, 0, 0);
+        ctx.fill();
+
+        // Orange Zone (AEGL-2 / Disabling)
+        const oLength = plumeLength * 0.55;
+        const oGrad = ctx.createRadialGradient(oLength * 0.3, 0, 10, oLength * 0.5, 0, oLength * 0.6);
+        oGrad.addColorStop(0, 'rgba(245, 158, 11, 0.65)');
+        oGrad.addColorStop(0.8, 'rgba(245, 158, 11, 0.25)');
+        oGrad.addColorStop(1, 'rgba(245, 158, 11, 0)');
+        ctx.fillStyle = oGrad;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(oLength * 0.3, -55 - pulse * 0.6, oLength * 0.7, -80 - pulse * 0.6, oLength, 0);
+        ctx.bezierCurveTo(oLength * 0.7, 80 + pulse * 0.6, oLength * 0.3, 55 + pulse * 0.6, 0, 0);
+        ctx.fill();
+
+        // Red Zone (IDLH / Lethal)
+        const rLength = plumeLength * 0.28;
+        const rGrad = ctx.createRadialGradient(rLength * 0.2, 0, 5, rLength * 0.5, 0, rLength * 0.6);
+        rGrad.addColorStop(0, 'rgba(208, 52, 44, 0.85)');
+        rGrad.addColorStop(0.8, 'rgba(208, 52, 44, 0.4)');
+        rGrad.addColorStop(1, 'rgba(208, 52, 44, 0)');
+        ctx.fillStyle = rGrad;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(rLength * 0.3, -30, rLength * 0.7, -40, rLength, 0);
+        ctx.bezierCurveTo(rLength * 0.7, 40, rLength * 0.3, 30, 0, 0);
+        ctx.fill();
+
+        ctx.restore();
+
+        // Leak Source Marker (Pulsing Red beacon)
+        ctx.fillStyle = '#D0342C';
+        ctx.beginPath();
+        ctx.arc(ox, oy, 7 + Math.sin(this.radarTime * 4) * 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 11px monospace';
+        ctx.fillText('LEAK SOURCE', ox - 35, oy + 22);
+
+        if (window.currentScreen === 'view-scanner') {
+          this.radarAnimFrame = requestAnimationFrame(() => this.animateRadar());
+        }
+      }
+    }
+
+    /* =====================================================================
+       10. MERGED ANALYTICS DASHBOARD CONTROLLER
+       ===================================================================== */
+    class DashboardController {
+      constructor() {
+        this.tlCanvas = document.getElementById('dashTimelineCanvas');
+        this.tlCtx = this.tlCanvas ? this.tlCanvas.getContext('2d') : null;
+        this.o2Canvas = document.getElementById('dashO2Canvas');
+        this.o2Ctx = this.o2Canvas ? this.o2Canvas.getContext('2d') : null;
+
+        this.initShiftTabs();
+        this.initExportCsv();
+      }
+
+      initShiftTabs() {
+        document.querySelectorAll('.shift-tab-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.shift-tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const shift = btn.getAttribute('data-shift');
+            this.renderShift(shift);
+          });
+        });
+      }
+
+      renderShift(shift) {
+        const text = document.getElementById('dashShiftSummaryText');
+        if (!text) return;
+        if (shift === 'morning') {
+          text.textContent = 'Morning shift (06:00-14:00) logged 1 verified transient methane leak at the valve assembly flange (peak: 1450 ppm). Automatic isolation alarm verified; O₂ recovered back to 20.9% within 8 minutes. No worker injuries or OSHA reportable exceedance.';
+        } else if (shift === 'afternoon') {
+          text.textContent = 'Afternoon shift (14:00-22:00) recorded a minor ammonia refrigeration coupling leak (peak: 32 ppm, OSHA PEL: 50 ppm). Local exhaust ventilation dispatched; minimum O₂ remained safe at 20.1%.';
+        } else {
+          text.textContent = 'Night shift (22:00-06:00) observed zero process leaks. All baseline noise floors remained within 1.2% threshold. Routine nitrogen purging protocol completed.';
+        }
+      }
+
+      initExportCsv() {
+        const btn = document.getElementById('dashExportCsvBtn');
+        if (btn) {
+          btn.addEventListener('click', () => {
+            let csv = "Timestamp,Chemical,Source_Location,Peak_PPM,OSHA_PEL_PPM,Min_O2_Percent,Exposure_Status,Alarm_Triggered\n";
+            csv += "2026-09-17 10:05:22,Methane (CH4),Valve Flange A4,1450,1000,18.2%,EXCEEDED,YES\n";
+            csv += "2026-09-17 13:20:41,Ammonia (NH3),Chiller Loop B,32,50,20.4%,WITHIN LIMITS,NO\n";
+            csv += "2026-09-17 16:45:10,Propane (C3H8),Tank Farm Manifold,900,1000,19.6%,WITHIN LIMITS,YES\n";
+            csv += "2026-09-17 21:10:04,Chlorine (Cl2),Treatment Dock,0.3,1.0,20.8%,WITHIN LIMITS,NO\n";
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'GasVision_Industrial_Telemetry_Report.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          });
+        }
+      }
+
+      render() {
+        this.drawTimeline();
+        this.drawO2Trend();
+        this.syncLiveTelemetry();
+      }
+
+      syncLiveTelemetry() {
+        if (!window.gasVisionApp) return;
+        const app = window.gasVisionApp;
+        const elPpm = document.getElementById('dashPpmVal');
+        const elO2 = document.getElementById('dashO2Val');
+        const elConf = document.getElementById('dashConfVal');
+
+        if (elPpm && app.decision) elPpm.textContent = Math.round(app.decision.lastPpm || 150);
+        if (elO2 && app.o2Monitor) elO2.textContent = `${app.o2Monitor.o2Percent.toFixed(1)}%`;
+        if (elConf && app.decision) elConf.textContent = `${Math.round((app.decision.confidence || 0) * 100)}%`;
+      }
+
+      drawTimeline() {
+        if (!this.tlCanvas || !this.tlCtx) return;
+        const ctx = this.tlCtx;
+        const rect = this.tlCanvas.parentElement.getBoundingClientRect();
+        this.tlCanvas.width = rect.width;
+        this.tlCanvas.height = rect.height;
+        const w = this.tlCanvas.width;
+        const h = this.tlCanvas.height;
+
+        ctx.clearRect(0, 0, w, h);
+
+        // Safe/Warning/Leak zone bands
+        const yWarn = h * (1 - 0.28);
+        const yLeak = h * (1 - 0.55);
+
+        ctx.fillStyle = 'rgba(30, 142, 90, 0.06)';
+        ctx.fillRect(0, yWarn, w, h - yWarn);
+        ctx.fillStyle = 'rgba(212, 138, 6, 0.08)';
+        ctx.fillRect(0, yLeak, w, yWarn - yLeak);
+        ctx.fillStyle = 'rgba(208, 52, 44, 0.08)';
+        ctx.fillRect(0, 0, w, yLeak);
+
+        // Draw time axis grid
+        ctx.strokeStyle = 'var(--border)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (let i = 0; i <= 6; i++) {
+          const x = (w / 6) * i;
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, h);
+          ctx.fillStyle = 'var(--muted)';
+          ctx.font = '10px monospace';
+          const hr = (i * 4).toString().padStart(2, '0') + ':00';
+          ctx.fillText(hr, Math.min(w - 35, x + 4), h - 6);
+        }
+        ctx.stroke();
+
+        // Synthetic 24-hour confidence spline
+        ctx.strokeStyle = '#D48A06';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        const pts = 120;
+        for (let i = 0; i <= pts; i++) {
+          const x = (w / pts) * i;
+          let val = 0.03 + Math.sin(i * 0.15) * 0.02;
+          // Incident peaks at i=50 (10:00) and i=85 (17:00)
+          if (i >= 45 && i <= 55) val += 0.75 * Math.exp(-Math.pow((i - 50) / 3, 2));
+          if (i >= 80 && i <= 90) val += 0.45 * Math.exp(-Math.pow((i - 85) / 3, 2));
+          const y = h * (1 - clamp(val, 0, 1));
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // Synthetic PPM line (Cyan)
+        ctx.strokeStyle = '#00BCD4';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        for (let i = 0; i <= pts; i++) {
+          const x = (w / pts) * i;
+          let ppm = 120 + Math.sin(i * 0.2) * 40;
+          if (i >= 45 && i <= 55) ppm += 1300 * Math.exp(-Math.pow((i - 50) / 3, 2));
+          if (i >= 80 && i <= 90) ppm += 750 * Math.exp(-Math.pow((i - 85) / 3, 2));
+          const y = h * (1 - clamp(ppm / 2000, 0, 1));
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+
+      drawO2Trend() {
+        if (!this.o2Canvas || !this.o2Ctx) return;
+        const ctx = this.o2Ctx;
+        const rect = this.o2Canvas.parentElement.getBoundingClientRect();
+        this.o2Canvas.width = rect.width;
+        this.o2Canvas.height = rect.height;
+        const w = this.o2Canvas.width;
+        const h = this.o2Canvas.height;
+
+        ctx.clearRect(0, 0, w, h);
+
+        // OSHA bands (15% to 22% scale)
+        const mapO2Y = (pct) => h * (1 - (pct - 15) / 7);
+
+        const y195 = mapO2Y(19.5);
+        const y160 = mapO2Y(16.0);
+
+        // Safe green band above 19.5%
+        ctx.fillStyle = 'rgba(30, 142, 90, 0.08)';
+        ctx.fillRect(0, 0, w, y195);
+        // Warning band 16% - 19.5%
+        ctx.fillStyle = 'rgba(212, 138, 6, 0.08)';
+        ctx.fillRect(0, y195, w, y160 - y195);
+        // Lethal band below 16%
+        ctx.fillStyle = 'rgba(208, 52, 44, 0.08)';
+        ctx.fillRect(0, y160, w, h - y160);
+
+        // Dashed threshold line at 19.5%
+        ctx.strokeStyle = '#D48A06';
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(0, y195);
+        ctx.lineTo(w, y195);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = '#D48A06';
+        ctx.font = '10px monospace';
+        ctx.fillText('OSHA MIN: 19.5%', 6, y195 - 4);
+
+        // O2 Curve
+        ctx.strokeStyle = '#2196F3';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        const pts = 100;
+        for (let i = 0; i <= pts; i++) {
+          const x = (w / pts) * i;
+          let o2 = 20.85 + Math.sin(i * 0.1) * 0.1;
+          // Dips during gas incidents
+          if (i >= 38 && i <= 48) o2 -= 2.8 * Math.exp(-Math.pow((i - 43) / 3, 2));
+          if (i >= 70 && i <= 78) o2 -= 1.4 * Math.exp(-Math.pow((i - 74) / 3, 2));
+          const y = mapO2Y(o2);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+    }
+
+
+// Initialize application upon DOM load
     window.addEventListener('DOMContentLoaded', () => {
       window.gasVisionApp = new GasVisionApp();
     });
